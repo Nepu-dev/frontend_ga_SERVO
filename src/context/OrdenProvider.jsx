@@ -179,7 +179,7 @@ const OrdenProvider = ({children}) => {
             orden,
             cargando,
             setCargando,
-            eliminarOT
+            eliminarOT,
         }}
     >
         {children}

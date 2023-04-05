@@ -7,7 +7,7 @@ import Spinner from '../components/Spinner';
 
 const EditarOT = () => {
 
-  const { cargando, obtenerOT } = useOrdenes();
+  const { cargando, obtenerOT, orden } = useOrdenes();
   const params = useParams();
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const EditarOT = () => {
   return (
     cargando ? <Spinner/> :
     (<>
-    <h1 className="text-4xl font-black">Orden de trabajo: </h1>
+    <h1 className="text-4xl font-black">Orden de trabajo: {orden.ot_number}</h1>
     <div className="mt-10 flex justify-center place-content-center">
         <FormularioOT/>
     </div>

@@ -4,7 +4,6 @@ import Alerta from "./Alerta";
 import { useParams } from "react-router-dom";
 
 const FormularioOT = () => {
-
   const [id, setId] = useState(null);
 
   const [formulario, setFormulario] = useState({
@@ -25,39 +24,39 @@ const FormularioOT = () => {
     factura_number: "",
     factura_Date: "",
     observaciones: "",
-    ot_pictures: "",
+    ot_pictures: [],
   });
 
-  const { mostrarAlerta, alerta, submitOT, orden } = useOrdenes();
+  const { mostrarAlerta, alerta, submitOT, orden, obtenerIMGS } = useOrdenes();
   const params = useParams();
 
   useEffect(() => {
     if (params.id) {
       setId(params.id);
       setFormulario({
-        ot_number: orden.ot_number || '',
-        om_number: orden.om_number || '',
-        init_Date: orden.init_Date?.split('T')[0] || '',
-        end_Date: orden.end_Date?.split('T')[0] || '',
-        ot_Description: orden.ot_Description || '',
-        value: orden.value || '',
-        solped: orden.solped || '',
-        aviso: orden.aviso || '',
-        oc_number: orden.oc_number || '',
-        oc_Date: orden.oc_Date?.split('T')[0] || '',
-        gd_number: orden.gd_number || '',
-        gd_Date: orden.gd_Date?.split('T')[0] || '',
-        HES: orden.HES || '',
-        HES_Date: orden.HES_Date?.split('T')[0] || '',
-        factura_number: orden.factura_number || '',
-        factura_Date: orden.factura_Date?.split('T')[0] || '',
-        observaciones: orden.observaciones || '',
-        ot_pictures: orden.ot_pictures || '',
+        ot_number: orden.ot_number || "",
+        om_number: orden.om_number || "",
+        init_Date: orden.init_Date?.split("T")[0] || "",
+        end_Date: orden.end_Date?.split("T")[0] || "",
+        ot_Description: orden.ot_Description || "",
+        value: orden.value || "",
+        solped: orden.solped || "",
+        aviso: orden.aviso || "",
+        oc_number: orden.oc_number || "",
+        oc_Date: orden.oc_Date?.split("T")[0] || "",
+        gd_number: orden.gd_number || "",
+        gd_Date: orden.gd_Date?.split("T")[0] || "",
+        HES: orden.HES || "",
+        HES_Date: orden.HES_Date?.split("T")[0] || "",
+        factura_number: orden.factura_number || "",
+        factura_Date: orden.factura_Date?.split("T")[0] || "",
+        observaciones: orden.observaciones || "",
+        ot_pictures: orden.ot_pictures || [],
       });
     } else {
       console.log("Nuevo proyecto.");
     }
-  }, [params])
+  }, [params]);
 
   const onChange = (e) => {
     setFormulario({
@@ -70,7 +69,15 @@ const FormularioOT = () => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: "smooth" });
 
-    if ([formulario.ot_number, formulario.om_number, formulario.init_Date, formulario.end_Date, formulario.value].includes('')) {
+    if (
+      [
+        formulario.ot_number,
+        formulario.om_number,
+        formulario.init_Date,
+        formulario.end_Date,
+        formulario.value,
+      ].includes("")
+    ) {
       mostrarAlerta({
         msg: "Ingrese los campos obligatorios (OT, OM, FECHAS Y VALOR)",
         error: true,
@@ -99,23 +106,42 @@ const FormularioOT = () => {
       factura_number: "",
       factura_Date: "",
       observaciones: "",
-      ot_pictures: "",
+      ot_pictures: [],
     });
   };
+
+
 
   const { msg } = alerta;
 
   return (
     <div className="p-4 bg-white shadow-md rounded-md">
       <div className="flex justify-between">
-        <h2 className="text-xl font-semibold mb-4">Formulario de Registro</h2>
+        <h2 className="text-xl font-semibold mb-4">
+          {id ? "Formulario de Edición" : "Formulario de Registro"}
+        </h2>
+        <button
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              fillRule="evenodd"
+              d="M19.5 21a3 3 0 003-3V9a3 3 0 00-3-3h-5.379a.75.75 0 01-.53-.22L11.47 3.66A2.25 2.25 0 009.879 3H4.5a3 3 0 00-3 3v12a3 3 0 003 3h15zm-6.75-10.5a.75.75 0 00-1.5 0v4.19l-1.72-1.72a.75.75 0 00-1.06 1.06l3 3a.75.75 0 001.06 0l3-3a.75.75 0 10-1.06-1.06l-1.72 1.72V10.5z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </button>
       </div>
 
       {msg && <Alerta alerta={alerta} />}
 
-      <form onSubmit={handleSubmit}>
-          {/* Aquí irían los campos del primer paso del formulario */}
-          <div className="flex justify-between mb-5">
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
+        {/* Aquí irían los campos del primer paso del formulario */}
+        <div className="flex justify-between mb-5">
           <label className="font-semibold text-sm uppercase" htmlFor="">
             N° OT:{" "}
           </label>
@@ -127,8 +153,8 @@ const FormularioOT = () => {
             value={formulario.ot_number}
             onChange={onChange}
           />
-          </div>
-          <div className="flex justify-between mb-5">
+        </div>
+        <div className="flex justify-between mb-5">
           <label className="font-semibold text-sm uppercase" htmlFor="">
             N° OM:{" "}
           </label>
@@ -140,8 +166,8 @@ const FormularioOT = () => {
             value={formulario.om_number}
             onChange={onChange}
           />
-          </div>
-          <div className="flex justify-between mb-5">
+        </div>
+        <div className="flex justify-between mb-5">
           <label className="font-semibold text-sm uppercase" htmlFor="">
             Fecha de ingreso:{" "}
           </label>
@@ -152,8 +178,8 @@ const FormularioOT = () => {
             value={formulario.init_Date}
             onChange={onChange}
           />
-          </div>
-          <div className="flex justify-between mb-5">
+        </div>
+        <div className="flex justify-between mb-5">
           <label className="font-semibold text-sm uppercase" htmlFor="">
             Fecha de Término:{" "}
           </label>
@@ -164,7 +190,7 @@ const FormularioOT = () => {
             value={formulario.end_Date}
             onChange={onChange}
           />
-          </div>
+        </div>
         {/* Aquí irían los campos del segundo paso del formulario */}
         <div className="flex justify-between w-full mb-5">
           <label className="font-semibold text-sm uppercase" htmlFor="">
@@ -184,157 +210,155 @@ const FormularioOT = () => {
         {/* Aquí irían los campos del tercer paso del formulario */}
         <div>
           <div className="flex justify-between mb-5">
-          <label className="font-semibold text-sm uppercase" htmlFor="">
-            Valor:{" "}
-          </label>
-          <input
-            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
-            type="number"
-            name="value"
-            placeholder="$#####"
-            value={formulario.value}
-            onChange={onChange}
-          />
+            <label className="font-semibold text-sm uppercase" htmlFor="">
+              Valor:{" "}
+            </label>
+            <input
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              type="number"
+              name="value"
+              placeholder="$#####"
+              value={formulario.value}
+              onChange={onChange}
+            />
           </div>
           <div className="flex justify-between mb-5">
-          <label className="font-semibold text-sm uppercase" htmlFor="">
-            Solped:{" "}
-          </label>
-          <input
-            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
-            type="number"
-            name="solped"
-            placeholder="##########"
-            value={formulario.solped}
-            onChange={onChange}
-          />
+            <label className="font-semibold text-sm uppercase" htmlFor="">
+              Solped:{" "}
+            </label>
+            <input
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              type="number"
+              name="solped"
+              placeholder="##########"
+              value={formulario.solped}
+              onChange={onChange}
+            />
           </div>
           <div className="flex justify-between mb-5">
-          <label className="font-semibold text-sm uppercase" htmlFor="">
-            Aviso:{" "}
-          </label>
-          <input
-            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
-            type="number"
-            name="aviso"
-            placeholder="##########"
-            value={formulario.aviso}
-            onChange={onChange}
-          />
+            <label className="font-semibold text-sm uppercase" htmlFor="">
+              Aviso:{" "}
+            </label>
+            <input
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              type="number"
+              name="aviso"
+              placeholder="##########"
+              value={formulario.aviso}
+              onChange={onChange}
+            />
           </div>
-
         </div>
         {/* Aquí irían los campos del cuarto paso del formulario */}
         <div>
           <div className="flex justify-between mb-5">
-          <label className="font-semibold text-sm uppercase" htmlFor="">
-            Orden de Compra:{" "}
-          </label>
-          <input
-            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
-            type="number"
-            name="oc_number"
-            placeholder="##########"
-            value={formulario.oc_number}
-            onChange={onChange}
-          />
+            <label className="font-semibold text-sm uppercase" htmlFor="">
+              Orden de Compra:{" "}
+            </label>
+            <input
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              type="number"
+              name="oc_number"
+              placeholder="##########"
+              value={formulario.oc_number}
+              onChange={onChange}
+            />
           </div>
           <div className="flex justify-between mb-5">
-          <label className="font-semibold text-sm uppercase" htmlFor="">
-            Fecha orden de compra:{" "}
-          </label>
-          <input
-            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
-            type="Date"
-            name="oc_Date"
-            value={formulario.oc_Date}
-            onChange={onChange}
-          />
+            <label className="font-semibold text-sm uppercase" htmlFor="">
+              Fecha orden de compra:{" "}
+            </label>
+            <input
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              type="Date"
+              name="oc_Date"
+              value={formulario.oc_Date}
+              onChange={onChange}
+            />
           </div>
         </div>
         {/* Aquí irían los campos del quinto paso del formulario */}
         <div>
           <div className="flex justify-between mb-5">
-          <label className="font-semibold text-sm uppercase" htmlFor="">
-            N° guía de despacho:{" "}
-          </label>
-          <input
-            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
-            type="number"
-            name="gd_number"
-            placeholder="###"
-            value={formulario.gd_number}
-            onChange={onChange}
-          />
+            <label className="font-semibold text-sm uppercase" htmlFor="">
+              N° guía de despacho:{" "}
+            </label>
+            <input
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              type="number"
+              name="gd_number"
+              placeholder="###"
+              value={formulario.gd_number}
+              onChange={onChange}
+            />
           </div>
           <div className="flex justify-between mb-5">
-          <label className="font-semibold text-sm uppercase" htmlFor="">
-            Fecha guía de despacho:{" "}
-          </label>
-          <input
-            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
-            type="Date"
-            name="gd_Date"
-            value={formulario.gd_Date}
-            onChange={onChange}
-          />
+            <label className="font-semibold text-sm uppercase" htmlFor="">
+              Fecha guía de despacho:{" "}
+            </label>
+            <input
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              type="Date"
+              name="gd_Date"
+              value={formulario.gd_Date}
+              onChange={onChange}
+            />
           </div>
         </div>
         {/* Aquí irían los campos del sexto paso del formulario */}
         <div>
           <div className="flex justify-between mb-5">
-          <label className="font-semibold text-sm uppercase" htmlFor="">
-            N° HES:{" "}
-          </label>
-          <input
-            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
-            type="number"
-            name="HES"
-            placeholder="##########"
-            value={formulario.HES}
-            onChange={onChange}
-          />
+            <label className="font-semibold text-sm uppercase" htmlFor="">
+              N° HES:{" "}
+            </label>
+            <input
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              type="number"
+              name="HES"
+              placeholder="##########"
+              value={formulario.HES}
+              onChange={onChange}
+            />
           </div>
           <div className="flex justify-between mb-5">
-          <label className="font-semibold text-sm uppercase" htmlFor="">
-            Fecha HES:{" "}
-          </label>
-          <input
-            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
-            type="Date"
-            name="HES_Date"
-            value={formulario.HES_Date}
-            onChange={onChange}
-          />
+            <label className="font-semibold text-sm uppercase" htmlFor="">
+              Fecha HES:{" "}
+            </label>
+            <input
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              type="Date"
+              name="HES_Date"
+              value={formulario.HES_Date}
+              onChange={onChange}
+            />
           </div>
-
         </div>
         {/* Aquí irían los campos del séptimo paso del formulario */}
         <div>
           <div className="flex justify-between mb-5">
-          <label className="font-semibold text-sm uppercase" htmlFor="">
-            N° Factura:{" "}
-          </label>
-          <input
-            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
-            type="number"
-            name="factura_number"
-            placeholder="###"
-            value={formulario.factura_number}
-            onChange={onChange}
-          />
+            <label className="font-semibold text-sm uppercase" htmlFor="">
+              N° Factura:{" "}
+            </label>
+            <input
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              type="number"
+              name="factura_number"
+              placeholder="###"
+              value={formulario.factura_number}
+              onChange={onChange}
+            />
           </div>
           <div className="flex justify-between mb-5">
-          <label className="font-semibold text-sm uppercase" htmlFor="">
-            Fecha factura:{" "}
-          </label>
-          <input
-            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
-            type="Date"
-            name="factura_Date"
-            value={formulario.factura_Date}
-            onChange={onChange}
-          />
+            <label className="font-semibold text-sm uppercase" htmlFor="">
+              Fecha factura:{" "}
+            </label>
+            <input
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              type="Date"
+              name="factura_Date"
+              value={formulario.factura_Date}
+              onChange={onChange}
+            />
           </div>
         </div>
         {/* Aquí irían los campos del octavo paso del formulario */}
@@ -367,10 +391,10 @@ const FormularioOT = () => {
         </div>
         <div>
           <button
-          className="bg-sky-600 text-center text-white w-full font-bold p-3 rounded-md hover:bg-sky-700 transition-colors"
-          type="submit"
+            className="bg-sky-600 text-center text-white w-full font-bold p-3 rounded-md hover:bg-sky-700 transition-colors"
+            type="submit"
           >
-            {id ? "Actualizar" : "Crear OT"};
+            {id ? "Actualizar" : "Crear OT"}
           </button>
         </div>
       </form>
