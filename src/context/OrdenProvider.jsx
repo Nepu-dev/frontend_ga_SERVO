@@ -64,12 +64,13 @@ const OrdenProvider = ({children}) => {
             }
             const config = {
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "multipart/form-data",
                     Authorization: `Bearer ${token}`
                 }
             }
-
+            console.log(Object.fromEntries(ot.entries()));
             const { data } = await clienteAxios.post('/ot', ot, config);
+            console.log(data);
             
             setOrdenes([...ordenes, data]);
 

@@ -59,14 +59,23 @@ const FormularioOT = () => {
   }, [params]);
 
   const onChange = (e) => {
-    setFormulario({
-      ...formulario,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value, files } = e.target;
+    if (e.target.type === "file") {
+      setFormulario({
+        ...formulario,
+        ot_pictures: [...files]
+      })
+    } else {
+      setFormulario({
+        ...formulario,
+        [name]: value
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formdata = new FormData();
     window.scrollTo({ top: 0, behavior: "smooth" });
 
     if (
@@ -85,7 +94,28 @@ const FormularioOT = () => {
       return;
     }
 
-    await submitOT(formulario, id);
+    formdata.append('ot_number', formulario.ot_number);
+    formdata.append('om_number', formulario.om_number);
+    formdata.append('init_Date', formulario.init_Date);
+    formdata.append('end_Date', formulario.end_Date);
+    formdata.append('ot_Description', formulario.ot_Description);
+    formdata.append('value', formulario.value);
+    formdata.append('solped', formulario.solped);
+    formdata.append('aviso', formulario.aviso);
+    formdata.append('oc_number', formulario.oc_number);
+    formdata.append('oc_Date', formulario.oc_Date);
+    formdata.append('gd_number', formulario.gd_number);
+    formdata.append('gd_Date', formulario.gd_Date);
+    formdata.append('HES', formulario.HES);
+    formdata.append('HES_Date', formulario.HES_Date);
+    formdata.append('factura_number', formulario.factura_number);
+    formdata.append('factura_Date', formulario.factura_Date);
+    formdata.append('observaciones', formulario.observaciones);
+    for (let i = 0; i < formulario.ot_pictures.length; i++) {
+      formdata.append('ot_pictures', formulario.ot_pictures[i]);
+    }
+
+    await submitOT(formdata, id);
 
     setId(null);
     setFormulario({
