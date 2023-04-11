@@ -27,7 +27,7 @@ const FormularioOT = () => {
     ot_pictures: [],
   });
 
-  const { mostrarAlerta, alerta, submitOT, orden, obtenerIMGS } = useOrdenes();
+  const { mostrarAlerta, alerta, submitOT, orden, downloadFiles } = useOrdenes();
   const params = useParams();
 
   useEffect(() => {
@@ -151,6 +151,7 @@ const FormularioOT = () => {
           {id ? "Formulario de Edición" : "Formulario de Registro"}
         </h2>
         <button
+        onClick={() => {downloadFiles(id)}}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
