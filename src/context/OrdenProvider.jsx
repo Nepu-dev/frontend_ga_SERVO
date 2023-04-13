@@ -7,6 +7,7 @@ const OrdenesContext = createContext();
 
 const OrdenProvider = ({ children }) => {
   const [ordenes, setOrdenes] = useState([]);
+  const [checkOrdenes, setcheckOrdenes] = useState([]);
   const [orden, setOrden] = useState({});
   const [alerta, setAlerta] = useState({});
   const [cargando, setCargando] = useState(false);
@@ -36,6 +37,30 @@ const OrdenProvider = ({ children }) => {
       setCargando(false);
     };
     obtenerOrdenes();
+  }, [auth]);
+
+  useEffect(() => {
+    const obtenerchkOrdenes = async () => {
+      setCargando(true);
+      try {
+        const token = sessionStorage.getItem("token");
+        if (!token) {
+          return;
+        }
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const { data } = await clienteAxios("/ot/checkedOTs", config);
+        setcheckOrdenes(data);
+      } catch (error) {
+        console.log(error);
+      }
+      setCargando(false);
+    };
+    obtenerchkOrdenes();
   }, [auth]);
 
   const mostrarAlerta = (alerta) => {
@@ -102,7 +127,17 @@ const OrdenProvider = ({ children }) => {
       const otActualizadas = ordenes.map((ordenState) =>
         ordenState._id === data.data._id ? data.data : ordenState
       );
-      setOrdenes(otActualizadas);
+      if (data.data.ot_state) {
+        const ordenesTrueActualizadas = checkOrdenes.map((ordenState) =>
+          ordenState._id === data.data._id ? data.data : ordenState
+        );
+        setcheckOrdenes(ordenesTrueActualizadas);
+      } else {
+        const ordenesFalseActualizadas = ordenes.map((ordenState) =>
+          ordenState._id === data.data._id ? data.data : ordenState
+        );
+        setOrdenes(ordenesFalseActualizadas);
+      }
       setAlerta({
         msg: "Orden de trabajo actualizada correctamente",
         error: false,
@@ -155,7 +190,6 @@ const OrdenProvider = ({ children }) => {
       const otActualizadas = ordenes.filter(
         (ordenState) => ordenState._id !== id
       );
-
       setOrdenes(otActualizadas);
       setAlerta({
         msg: data.data.msg,
@@ -182,10 +216,12 @@ const OrdenProvider = ({ children }) => {
         },
         responseType: "blob",
       };
-      
+
       const response = await clienteAxios(`/ot/files/${id}`, config);
       console.log(response);
-      const blob = new Blob([response.data], { type: 'application/octet-stream' });
+      const blob = new Blob([response.data], {
+        type: "application/octet-stream",
+      });
       const url = window.URL.createObjectURL(new Blob([blob]));
       const link = document.createElement("a");
       link.href = url;
@@ -202,6 +238,7 @@ const OrdenProvider = ({ children }) => {
     <OrdenesContext.Provider
       value={{
         ordenes,
+        checkOrdenes,
         mostrarAlerta,
         alerta,
         submitOT,

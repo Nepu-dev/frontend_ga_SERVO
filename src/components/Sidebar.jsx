@@ -26,7 +26,13 @@ const Sidebar = () => {
       to="lista-ot"
       className="bg-sky-600 w-full p-3 text-white uppercase font-bold block mt-5 text-center rounded-lg"
       >
-      Lista Ordenes de trabajo
+      Lista Ordenes de trabajo Pendientes
+      </Link>
+      <Link
+      to="checked-lista-ot"
+      className="bg-sky-600 w-full p-3 text-white uppercase font-bold block mt-5 text-center rounded-lg"
+      >
+      Lista Ordenes de trabajo Completadas
       </Link>
     </aside>
     </div>

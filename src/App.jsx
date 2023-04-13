@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import OTs from "./pages/OTs";
 import NuevaOT from "./pages/NuevaOT";
 import EditarOT from "./pages/EditarOT";
+import CheckedOTs from "./pages/checkedOTs";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
               <Route index element={<OTs />} />
               <Route path="crear-ot" element={<NuevaOT/>}/>
               <Route path="lista-ot" element={<OTs/>}/>
+              <Route path="checked-lista-ot" element={<CheckedOTs />}/>
               <Route path=":id" element={<NuevaOT/>}/>
               <Route path="editar/:id" element={<EditarOT/>}/>
             </Route>
