@@ -5,8 +5,9 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const TablaOrdenes = () => {
-  const { checkOrdenes, eliminarOT } = useOrdenes();
+  const { ordenes, eliminarOT } = useOrdenes();
   const params = useParams();
+  const ordenesFiltradas = ordenes.filter((orden) => orden.ot_state === true);
 
   const handleClick = (id) => {
     if (
@@ -125,7 +126,7 @@ const TablaOrdenes = () => {
 
   return (
     <>
-      <DataTable columns={columns} data={checkOrdenes} />
+      <DataTable columns={columns} data={ordenesFiltradas} />
     </>
   );
 };

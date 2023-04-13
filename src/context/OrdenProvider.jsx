@@ -7,7 +7,6 @@ const OrdenesContext = createContext();
 
 const OrdenProvider = ({ children }) => {
   const [ordenes, setOrdenes] = useState([]);
-  const [checkOrdenes, setcheckOrdenes] = useState([]);
   const [orden, setOrden] = useState({});
   const [alerta, setAlerta] = useState({});
   const [cargando, setCargando] = useState(false);
@@ -37,30 +36,6 @@ const OrdenProvider = ({ children }) => {
       setCargando(false);
     };
     obtenerOrdenes();
-  }, [auth]);
-
-  useEffect(() => {
-    const obtenerchkOrdenes = async () => {
-      setCargando(true);
-      try {
-        const token = sessionStorage.getItem("token");
-        if (!token) {
-          return;
-        }
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        };
-        const { data } = await clienteAxios("/ot/checkedOTs", config);
-        setcheckOrdenes(data);
-      } catch (error) {
-        console.log(error);
-      }
-      setCargando(false);
-    };
-    obtenerchkOrdenes();
   }, [auth]);
 
   const mostrarAlerta = (alerta) => {
@@ -124,20 +99,10 @@ const OrdenProvider = ({ children }) => {
       };
       const data = await clienteAxios.put(`/ot/${id}`, ot, config);
 
-      const otActualizadas = ordenes.map((ordenState) =>
+      const ordenesActualizadas = ordenes.map((ordenState) =>
         ordenState._id === data.data._id ? data.data : ordenState
       );
-      if (data.data.ot_state) {
-        const ordenesTrueActualizadas = checkOrdenes.map((ordenState) =>
-          ordenState._id === data.data._id ? data.data : ordenState
-        );
-        setcheckOrdenes(ordenesTrueActualizadas);
-      } else {
-        const ordenesFalseActualizadas = ordenes.map((ordenState) =>
-          ordenState._id === data.data._id ? data.data : ordenState
-        );
-        setOrdenes(ordenesFalseActualizadas);
-      }
+      setOrdenes(ordenesActualizadas);
       setAlerta({
         msg: "Orden de trabajo actualizada correctamente",
         error: false,
@@ -238,7 +203,6 @@ const OrdenProvider = ({ children }) => {
     <OrdenesContext.Provider
       value={{
         ordenes,
-        checkOrdenes,
         mostrarAlerta,
         alerta,
         submitOT,

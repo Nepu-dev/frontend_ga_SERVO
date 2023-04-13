@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 const TablaOrdenesPendientes = () => {
   const { ordenes, eliminarOT } = useOrdenes();
   const params = useParams();
+  const ordenesFiltradas = ordenes.filter((orden) => orden.ot_state === false);
 
   const handleClick = (id) => {
     if (
@@ -125,7 +126,7 @@ const TablaOrdenesPendientes = () => {
 
   return (
     <>
-      <DataTable columns={columns} data={ordenes} />
+      <DataTable columns={columns} data={ordenesFiltradas} />
     </>
   );
 };

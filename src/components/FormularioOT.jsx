@@ -23,11 +23,13 @@ const FormularioOT = () => {
     HES_Date: "",
     factura_number: "",
     factura_Date: "",
+    ot_state: false,
     observaciones: "",
     ot_pictures: [],
   });
 
-  const { mostrarAlerta, alerta, submitOT, orden, downloadFiles } = useOrdenes();
+  const { mostrarAlerta, alerta, submitOT, orden, downloadFiles } =
+    useOrdenes();
   const params = useParams();
 
   useEffect(() => {
@@ -50,6 +52,7 @@ const FormularioOT = () => {
         HES_Date: orden.HES_Date?.split("T")[0] || "",
         factura_number: orden.factura_number || "",
         factura_Date: orden.factura_Date?.split("T")[0] || "",
+        ot_state: orden.ot_state || false,
         observaciones: orden.observaciones || "",
         ot_pictures: orden.ot_pictures || [],
       });
@@ -59,16 +62,16 @@ const FormularioOT = () => {
   }, [params]);
 
   const onChange = (e) => {
-    const { name, value, files } = e.target;
+    const { name, value, files, checked } = e.target;
     if (e.target.type === "file") {
       setFormulario({
         ...formulario,
-        ot_pictures: [...files]
-      })
+        ot_pictures: [...files],
+      });
     } else {
       setFormulario({
         ...formulario,
-        [name]: value
+        [name]: name === "ot_state" ? checked : value,
       });
     }
   };
@@ -94,25 +97,26 @@ const FormularioOT = () => {
       return;
     }
 
-    formdata.append('ot_number', formulario.ot_number);
-    formdata.append('om_number', formulario.om_number);
-    formdata.append('init_Date', formulario.init_Date);
-    formdata.append('end_Date', formulario.end_Date);
-    formdata.append('ot_Description', formulario.ot_Description);
-    formdata.append('value', formulario.value);
-    formdata.append('solped', formulario.solped);
-    formdata.append('aviso', formulario.aviso);
-    formdata.append('oc_number', formulario.oc_number);
-    formdata.append('oc_Date', formulario.oc_Date);
-    formdata.append('gd_number', formulario.gd_number);
-    formdata.append('gd_Date', formulario.gd_Date);
-    formdata.append('HES', formulario.HES);
-    formdata.append('HES_Date', formulario.HES_Date);
-    formdata.append('factura_number', formulario.factura_number);
-    formdata.append('factura_Date', formulario.factura_Date);
-    formdata.append('observaciones', formulario.observaciones);
+    formdata.append("ot_number", formulario.ot_number);
+    formdata.append("om_number", formulario.om_number);
+    formdata.append("init_Date", formulario.init_Date);
+    formdata.append("end_Date", formulario.end_Date);
+    formdata.append("ot_Description", formulario.ot_Description);
+    formdata.append("value", formulario.value);
+    formdata.append("solped", formulario.solped);
+    formdata.append("aviso", formulario.aviso);
+    formdata.append("oc_number", formulario.oc_number);
+    formdata.append("oc_Date", formulario.oc_Date);
+    formdata.append("gd_number", formulario.gd_number);
+    formdata.append("gd_Date", formulario.gd_Date);
+    formdata.append("HES", formulario.HES);
+    formdata.append("HES_Date", formulario.HES_Date);
+    formdata.append("factura_number", formulario.factura_number);
+    formdata.append("factura_Date", formulario.factura_Date);
+    formdata.append("ot_state", formulario.ot_state);
+    formdata.append("observaciones", formulario.observaciones);
     for (let i = 0; i < formulario.ot_pictures.length; i++) {
-      formdata.append('ot_pictures', formulario.ot_pictures[i]);
+      formdata.append("ot_pictures", formulario.ot_pictures[i]);
     }
 
     await submitOT(formdata, id);
@@ -135,12 +139,11 @@ const FormularioOT = () => {
       HES_Date: "",
       factura_number: "",
       factura_Date: "",
+      ot_state: false,
       observaciones: "",
       ot_pictures: [],
     });
   };
-
-
 
   const { msg } = alerta;
 
@@ -151,7 +154,9 @@ const FormularioOT = () => {
           {id ? "Formulario de Edición" : "Formulario de Registro"}
         </h2>
         <button
-        onClick={() => {downloadFiles(id)}}
+          onClick={() => {
+            downloadFiles(id);
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -390,6 +395,20 @@ const FormularioOT = () => {
               value={formulario.factura_Date}
               onChange={onChange}
             />
+          </div>
+          <div className="flex justify-between mb-5">
+            <label className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                className="form-checkbox h-5 w-5 text-green-500"
+                checked={formulario.ot_state}
+                name="ot_state"
+                onChange={onChange}
+              />
+              <span className="text-gray-900 font-medium">
+                Lista
+              </span>
+            </label>
           </div>
         </div>
         {/* Aquí irían los campos del octavo paso del formulario */}
