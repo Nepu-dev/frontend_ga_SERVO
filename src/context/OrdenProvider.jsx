@@ -66,9 +66,8 @@ const OrdenProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
       };
-      console.log(Object.fromEntries(ot.entries()));
+
       const { data } = await clienteAxios.post("/ot", ot, config);
-      console.log(data);
 
       setOrdenes([...ordenes, data]);
 
@@ -199,6 +198,12 @@ const OrdenProvider = ({ children }) => {
     }
   };
 
+  const cerrarSesionProvider = () => {
+    setOrdenes([]);
+    setOrden({});
+    setAlerta({});
+  }
+
   return (
     <OrdenesContext.Provider
       value={{
@@ -212,6 +217,7 @@ const OrdenProvider = ({ children }) => {
         setCargando,
         eliminarOT,
         downloadFiles,
+        cerrarSesionProvider
       }}
     >
       {children}
