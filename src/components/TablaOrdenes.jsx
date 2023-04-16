@@ -99,12 +99,24 @@ const TablaOrdenes = () => {
       selector: (row) => row.oc_Date ? row.oc_Date.split("T")[0] : "",
     },
     {
+      name: "N° Guía de Despacho de cliente",
+      selector: (row) => row.gd_number_client,
+    },
+    {
+      name: "Fecha Guía de Despacho de cliente",
+      selector: (row) => row.gd_Date_client ? row.gd_Date_client.split("T")[0] : "",
+    },
+    {
       name: "N° Guía de Despacho",
       selector: (row) => row.gd_number,
     },
     {
       name: "Fecha Guía de Despacho",
       selector: (row) => row.gd_Date ? row.gd_Date.split("T")[0] : "",
+    },
+    {
+      name: "Fecha Estado de Pago",
+      selector: (row) => row.ep_Date,
     },
     {
       name: "N° HES",

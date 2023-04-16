@@ -17,8 +17,11 @@ const FormularioOT = () => {
     aviso: "",
     oc_number: "",
     oc_Date: "",
+    gd_number_client: "",
+    gd_Date_client: "",
     gd_number: "",
     gd_Date: "",
+    ep_Date: "",
     HES: "",
     HES_Date: "",
     factura_number: "",
@@ -46,8 +49,11 @@ const FormularioOT = () => {
         aviso: orden.aviso || "",
         oc_number: orden.oc_number || "",
         oc_Date: orden.oc_Date?.split("T")[0] || "",
+        gd_number_client: orden.gd_number_client || "",
+        gd_Date_client: orden.gd_Date_client?.split("T")[0] || "",
         gd_number: orden.gd_number || "",
         gd_Date: orden.gd_Date?.split("T")[0] || "",
+        ep_Date: orden.ep_Date?.split("T")[0] || "",
         HES: orden.HES || "",
         HES_Date: orden.HES_Date?.split("T")[0] || "",
         factura_number: orden.factura_number || "",
@@ -107,8 +113,11 @@ const FormularioOT = () => {
     formdata.append("aviso", formulario.aviso);
     formdata.append("oc_number", formulario.oc_number);
     formdata.append("oc_Date", formulario.oc_Date);
+    formdata.append("gd_number_client", formulario.gd_number_client);
+    formdata.append("gd_Date_client", formulario.gd_Date_client);
     formdata.append("gd_number", formulario.gd_number);
     formdata.append("gd_Date", formulario.gd_Date);
+    formdata.append("ep_Date", formulario.ep_Date);
     formdata.append("HES", formulario.HES);
     formdata.append("HES_Date", formulario.HES_Date);
     formdata.append("factura_number", formulario.factura_number);
@@ -133,8 +142,11 @@ const FormularioOT = () => {
       aviso: "",
       oc_number: "",
       oc_Date: "",
+      gd_number_client: "",
+      gd_Date_client: "",
       gd_number: "",
       gd_Date: "",
+      ep_Date: "",
       HES: "",
       HES_Date: "",
       factura_number: "",
@@ -247,7 +259,7 @@ const FormularioOT = () => {
         <div>
           <div className="flex justify-between mb-5">
             <label className="font-semibold text-sm uppercase" htmlFor="">
-              Valor:{" "}
+              Valor Neto:{" "}
             </label>
             <input
               className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
@@ -317,6 +329,33 @@ const FormularioOT = () => {
         <div>
           <div className="flex justify-between mb-5">
             <label className="font-semibold text-sm uppercase" htmlFor="">
+              N° guía de despacho de Cliente:{" "}
+            </label>
+            <input
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              type="number"
+              name="gd_number_client"
+              placeholder="###"
+              value={formulario.gd_number_client}
+              onChange={onChange}
+            />
+          </div>
+          <div className="flex justify-between mb-5">
+            <label className="font-semibold text-sm uppercase" htmlFor="">
+              Fecha guía de despacho de Cliente:{" "}
+            </label>
+            <input
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              type="Date"
+              name="gd_Date_client"
+              value={formulario.gd_Date_client}
+              onChange={onChange}
+            />
+          </div>
+        </div>
+        <div>
+          <div className="flex justify-between mb-5">
+            <label className="font-semibold text-sm uppercase" htmlFor="">
               N° guía de despacho:{" "}
             </label>
             <input
@@ -343,6 +382,18 @@ const FormularioOT = () => {
         </div>
         {/* Aquí irían los campos del sexto paso del formulario */}
         <div>
+        <div className="flex justify-between mb-5">
+            <label className="font-semibold text-sm uppercase" htmlFor="">
+              Fecha Estado de pago{" "}
+            </label>
+            <input
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              type="Date"
+              name="ep_Date"
+              value={formulario.ep_Date}
+              onChange={onChange}
+            />
+          </div>
           <div className="flex justify-between mb-5">
             <label className="font-semibold text-sm uppercase" htmlFor="">
               N° HES:{" "}
