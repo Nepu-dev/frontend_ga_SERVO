@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import useOrdenes from "../hooks/useOrdenes";
 import Alerta from "./Alerta";
 import { useParams } from "react-router-dom";
+import PdfViewer from "./PdfViewer";
 
 const FormularioOT = () => {
   const [id, setId] = useState(null);
@@ -31,7 +32,7 @@ const FormularioOT = () => {
     ot_pictures: [],
   });
 
-  const { mostrarAlerta, alerta, submitOT, orden, downloadFiles } =
+  const { mostrarAlerta, alerta, submitOT, orden, downloadFiles, mostrarFiles } =
     useOrdenes();
   const params = useParams();
 
@@ -62,9 +63,7 @@ const FormularioOT = () => {
         observaciones: orden.observaciones || "",
         ot_pictures: orden.ot_pictures || [],
       });
-    } else {
-      console.log("Nuevo proyecto.");
-    }
+    } 
   }, [params]);
 
   const onChange = (e) => {
@@ -165,24 +164,42 @@ const FormularioOT = () => {
         <h2 className="text-xl font-semibold mb-4">
           {id ? "Formulario de Edición" : "Formulario de Registro"}
         </h2>
-        <button
-          onClick={() => {
-            downloadFiles(id);
-          }}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="w-6 h-6"
+        {id ? (
+          <button onClick={() => mostrarFiles(orden._id)}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-6 h-6"
+            >
+              <path d="M19.906 9c.382 0 .749.057 1.094.162V9a3 3 0 00-3-3h-3.879a.75.75 0 01-.53-.22L11.47 3.66A2.25 2.25 0 009.879 3H6a3 3 0 00-3 3v3.162A3.756 3.756 0 014.094 9h15.812zM4.094 10.5a2.25 2.25 0 00-2.227 2.568l.857 6A2.25 2.25 0 004.951 21H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-2.227-2.568H4.094z" />
+            </svg>
+          </button>
+        ) : (
+          ""
+        )}
+        {id ? (
+          <button
+            onClick={() => {
+              downloadFiles(id);
+            }}
           >
-            <path
-              fillRule="evenodd"
-              d="M19.5 21a3 3 0 003-3V9a3 3 0 00-3-3h-5.379a.75.75 0 01-.53-.22L11.47 3.66A2.25 2.25 0 009.879 3H4.5a3 3 0 00-3 3v12a3 3 0 003 3h15zm-6.75-10.5a.75.75 0 00-1.5 0v4.19l-1.72-1.72a.75.75 0 00-1.06 1.06l3 3a.75.75 0 001.06 0l3-3a.75.75 0 10-1.06-1.06l-1.72 1.72V10.5z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                fillRule="evenodd"
+                d="M19.5 21a3 3 0 003-3V9a3 3 0 00-3-3h-5.379a.75.75 0 01-.53-.22L11.47 3.66A2.25 2.25 0 009.879 3H4.5a3 3 0 00-3 3v12a3 3 0 003 3h15zm-6.75-10.5a.75.75 0 00-1.5 0v4.19l-1.72-1.72a.75.75 0 00-1.06 1.06l3 3a.75.75 0 001.06 0l3-3a.75.75 0 10-1.06-1.06l-1.72 1.72V10.5z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </button>
+        ) : (
+          ""
+        )}
       </div>
 
       {msg && <Alerta alerta={alerta} />}
@@ -382,7 +399,7 @@ const FormularioOT = () => {
         </div>
         {/* Aquí irían los campos del sexto paso del formulario */}
         <div>
-        <div className="flex justify-between mb-5">
+          <div className="flex justify-between mb-5">
             <label className="font-semibold text-sm uppercase" htmlFor="">
               Fecha Estado de pago{" "}
             </label>
@@ -456,9 +473,7 @@ const FormularioOT = () => {
                 name="ot_state"
                 onChange={onChange}
               />
-              <span className="text-gray-900 font-medium">
-                Lista
-              </span>
+              <span className="text-gray-900 font-medium">Lista</span>
             </label>
           </div>
         </div>
@@ -499,6 +514,7 @@ const FormularioOT = () => {
           </button>
         </div>
       </form>
+      <PdfViewer />
     </div>
   );
 };

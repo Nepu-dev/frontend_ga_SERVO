@@ -10,6 +10,8 @@ const OrdenProvider = ({ children }) => {
   const [orden, setOrden] = useState({});
   const [alerta, setAlerta] = useState({});
   const [cargando, setCargando] = useState(false);
+  const [modal, setModal] = useState(false);
+  const [pdfFile, setpdfFile] = useState(null);
 
   const navigate = useNavigate();
   const { auth } = useAuth();
@@ -182,7 +184,6 @@ const OrdenProvider = ({ children }) => {
       };
 
       const response = await clienteAxios(`/ot/files/${id}`, config);
-      console.log(response);
       const blob = new Blob([response.data], {
         type: "application/octet-stream",
       });
@@ -198,11 +199,42 @@ const OrdenProvider = ({ children }) => {
     }
   };
 
+  const mostrarFiles = async (id) => {
+    setCargando(true);
+    try {
+      const token = sessionStorage.getItem("token");
+      if (!token) {
+        return;
+      }
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        responseType: "blob",
+      };
+
+      const response = await clienteAxios(`/ot/file/${id}`, config);
+      console.log(response.data);
+      const pdfUrl = URL.createObjectURL(response.data);
+      setpdfFile(pdfUrl);
+      console.log(pdfUrl);
+      handleModal();
+    } catch (error) {
+      console.log(error);
+    }
+    setCargando(false);
+  };
+
+  const handleModal = () => {
+    setModal(!modal);
+  };
+
   const cerrarSesionProvider = () => {
     setOrdenes([]);
     setOrden({});
     setAlerta({});
-  }
+  };
 
   return (
     <OrdenesContext.Provider
@@ -217,7 +249,11 @@ const OrdenProvider = ({ children }) => {
         setCargando,
         eliminarOT,
         downloadFiles,
-        cerrarSesionProvider
+        mostrarFiles,
+        modal,
+        handleModal,
+        cerrarSesionProvider,
+        pdfFile
       }}
     >
       {children}
