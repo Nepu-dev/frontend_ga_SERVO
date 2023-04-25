@@ -32,7 +32,7 @@ const FormularioOT = () => {
     ot_pictures: [],
   });
 
-  const { mostrarAlerta, alerta, submitOT, orden, downloadFiles, mostrarFiles } =
+  const { mostrarAlerta, alerta, submitOT, orden, downloadFiles, mostrarFiles, index } =
     useOrdenes();
   const params = useParams();
 
@@ -165,7 +165,7 @@ const FormularioOT = () => {
           {id ? "Formulario de Edición" : "Formulario de Registro"}
         </h2>
         {id ? (
-          <button onClick={() => mostrarFiles(orden._id)}>
+          <button onClick={() => mostrarFiles(orden._id, index)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"

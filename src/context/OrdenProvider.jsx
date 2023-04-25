@@ -12,6 +12,7 @@ const OrdenProvider = ({ children }) => {
   const [cargando, setCargando] = useState(false);
   const [modal, setModal] = useState(false);
   const [pdfFile, setpdfFile] = useState(null);
+  const [index, setIndex] = useState(0);
 
   const navigate = useNavigate();
   const { auth } = useAuth();
@@ -199,7 +200,7 @@ const OrdenProvider = ({ children }) => {
     }
   };
 
-  const mostrarFiles = async (id) => {
+  const mostrarFiles = async (id, index) => {
     setCargando(true);
     try {
       const token = sessionStorage.getItem("token");
@@ -213,13 +214,10 @@ const OrdenProvider = ({ children }) => {
         },
         responseType: "blob",
       };
-
-      const response = await clienteAxios(`/ot/file/${id}`, config);
-      console.log(response.data);
+      const response = await clienteAxios(`/ot/file/${id}/${index}`, config);
       const pdfUrl = URL.createObjectURL(response.data);
       setpdfFile(pdfUrl);
-      console.log(pdfUrl);
-      handleModal();
+      if(modal === false) handleModal();
     } catch (error) {
       console.log(error);
     }
@@ -253,7 +251,9 @@ const OrdenProvider = ({ children }) => {
         modal,
         handleModal,
         cerrarSesionProvider,
-        pdfFile
+        pdfFile,
+        index,
+        setIndex
       }}
     >
       {children}

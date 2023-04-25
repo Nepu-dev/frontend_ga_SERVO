@@ -4,8 +4,38 @@ import useOrdenes from "../hooks/useOrdenes";
 import Spinner from "./Spinner";
 
 const PdfViewer = () => {
-  const { modal, handleModal, mostrarFiles, orden, pdfFile, cargando } =
-    useOrdenes();
+  const {
+    modal,
+    handleModal,
+    mostrarFiles,
+    orden,
+    pdfFile,
+    cargando,
+    index,
+    setIndex,
+  } = useOrdenes();
+
+  const handleClose = () => {
+    handleModal();
+    setIndex(0);
+  };
+
+  const next = () => setIndex(index + 1);
+  const prev = () => setIndex(index - 1);
+
+  const handleNext = () => {
+    if (index == orden.ot_pictures.length - 1) return;
+    const indice = index + 1;
+    mostrarFiles(orden._id, indice);
+    next();
+  }
+
+  const handlePrev = () => {
+    if (index == 0) return;
+    const indice = index - 1;
+    mostrarFiles(orden._id, indice);
+    prev();
+  }
 
   return (
     <Transition.Root show={modal} as={Fragment}>
@@ -46,10 +76,42 @@ const PdfViewer = () => {
           >
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle max-w-full w-full sm:p-6">
               <div className="hidden sm:block absolute top-0 right-0 pt-4 pr-4">
+              <button type="button" onClick={handlePrev}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15.75 19.5L8.25 12l7.5-7.5"
+                    />
+                  </svg>
+                </button>
+                <button type="button" onClick={handleNext}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                    />
+                  </svg>
+                </button>
                 <button
                   type="button"
                   className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  onClick={handleModal}
+                  onClick={handleClose}
                 >
                   <span className="sr-only">Cerrar</span>
                   <svg
@@ -76,7 +138,11 @@ const PdfViewer = () => {
                     {cargando ? (
                       <Spinner />
                     ) : (
-                      <object data={pdfFile} type="application/pdf" style={{ width: '100%', height: '80vh' }}>
+                      <object
+                        data={pdfFile}
+                        type="application/pdf"
+                        style={{ width: "100%", height: "80vh" }}
+                      >
                         <p>El pdf no pudo ser mostrado</p>
                       </object>
                     )}
