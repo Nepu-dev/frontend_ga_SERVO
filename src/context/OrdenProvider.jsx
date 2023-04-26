@@ -152,19 +152,13 @@ const OrdenProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
       };
-      const data = await clienteAxios.delete(`/ot/${id}`, config);
+
+      await clienteAxios.delete(`/ot/${id}`, config);
 
       const otActualizadas = ordenes.filter(
         (ordenState) => ordenState._id !== id
       );
       setOrdenes(otActualizadas);
-      setAlerta({
-        msg: data.data.msg,
-        error: false,
-      });
-      setTimeout(() => {
-        setAlerta({});
-      }, 3000);
     } catch (error) {
       console.log(error);
     }
@@ -224,6 +218,27 @@ const OrdenProvider = ({ children }) => {
     setCargando(false);
   };
 
+  const eliminarFile = async (id, index) => {
+    try {
+      const token = sessionStorage.getItem("token");
+      if (!token) {
+        return;
+      }
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        responseType: "blob",
+      };
+
+      await clienteAxios.delete(`/ot/file/${id}/${index}`, config);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const handleModal = () => {
     setModal(!modal);
   };
@@ -253,7 +268,8 @@ const OrdenProvider = ({ children }) => {
         cerrarSesionProvider,
         pdfFile,
         index,
-        setIndex
+        setIndex,
+        eliminarFile
       }}
     >
       {children}

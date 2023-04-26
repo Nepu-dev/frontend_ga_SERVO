@@ -13,6 +13,7 @@ const PdfViewer = () => {
     cargando,
     index,
     setIndex,
+    eliminarFile,
   } = useOrdenes();
 
   const handleClose = () => {
@@ -22,20 +23,32 @@ const PdfViewer = () => {
 
   const next = () => setIndex(index + 1);
   const prev = () => setIndex(index - 1);
-
+  
   const handleNext = () => {
     if (index == orden.ot_pictures.length - 1) return;
     const indice = index + 1;
     mostrarFiles(orden._id, indice);
     next();
-  }
+  };
 
   const handlePrev = () => {
     if (index == 0) return;
     const indice = index - 1;
     mostrarFiles(orden._id, indice);
     prev();
-  }
+  };
+
+  const handleDelete = () => {
+    if (
+      confirm(
+        "¿Estás seguro que quieres eliminar este archivo?, No se podrá recuperar"
+      )
+    ) {
+      eliminarFile(orden._id, index);
+      
+      handleClose();
+    }
+  };
 
   return (
     <Transition.Root show={modal} as={Fragment}>
@@ -76,7 +89,21 @@ const PdfViewer = () => {
           >
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle max-w-full w-full sm:p-6">
               <div className="hidden sm:block absolute top-0 right-0 pt-4 pr-4">
-              <button type="button" onClick={handlePrev}>
+                <button type="button" onClick={handleDelete}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <button type="button" onClick={handlePrev}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"

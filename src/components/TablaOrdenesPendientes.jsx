@@ -12,7 +12,7 @@ const TablaOrdenesPendientes = () => {
   const handleClick = (id) => {
     if (
       confirm(
-        "¿Estás seguro que quieres eliminar esta orden?, no se podrá recuperar"
+        "¿Estás seguro que quieres eliminar esta orden?, No se podrá recuperar"
       )
     ) {
       eliminarOT(id);
