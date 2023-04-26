@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import DataTable from "react-data-table-component";
 import useOrdenes from "../hooks/useOrdenes";
 import { useParams } from "react-router-dom";
@@ -8,6 +8,25 @@ const TablaOrdenesPendientes = () => {
   const { ordenes, eliminarOT } = useOrdenes();
   const params = useParams();
   const ordenesFiltradas = ordenes.filter((orden) => orden.ot_state === false);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredData = (searchTerm) => {
+    return ordenesFiltradas.filter(
+      (orden) =>
+        orden.ot_number
+          .toString()
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        orden.om_number
+          .toString()
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+    );
+  };
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
 
   const handleClick = (id) => {
     if (
@@ -68,11 +87,11 @@ const TablaOrdenesPendientes = () => {
     },
     {
       name: "Fecha de inicio",
-      selector: (row) => row.init_Date ? row.init_Date.split("T")[0] : "",
+      selector: (row) => (row.init_Date ? row.init_Date.split("T")[0] : ""),
     },
     {
       name: "Fecha término",
-      selector: (row) => row.end_Date ? row.end_Date.split("T")[0] : "",
+      selector: (row) => (row.end_Date ? row.end_Date.split("T")[0] : ""),
     },
     {
       name: "Descripción",
@@ -96,7 +115,7 @@ const TablaOrdenesPendientes = () => {
     },
     {
       name: "Fecha Orden de Compra",
-      selector: (row) => row.oc_Date ? row.oc_Date.split("T")[0] : "",
+      selector: (row) => (row.oc_Date ? row.oc_Date.split("T")[0] : ""),
     },
     {
       name: "N° Guía de Despacho de Cliente",
@@ -104,7 +123,8 @@ const TablaOrdenesPendientes = () => {
     },
     {
       name: "Fecha Guía de Despacho de Cliente",
-      selector: (row) => row.gd_Date_client ? row.gd_Date_client.split("T")[0] : "",
+      selector: (row) =>
+        row.gd_Date_client ? row.gd_Date_client.split("T")[0] : "",
     },
     {
       name: "N° Guía de Despacho",
@@ -112,11 +132,11 @@ const TablaOrdenesPendientes = () => {
     },
     {
       name: "Fecha Guía de Despacho",
-      selector: (row) => row.gd_Date ? row.gd_Date.split("T")[0] : "",
+      selector: (row) => (row.gd_Date ? row.gd_Date.split("T")[0] : ""),
     },
     {
       name: "Fecha Estado de Pago",
-      selector: (row) => row.ep_Date ? row.ep_Date.split("T")[0] : "",
+      selector: (row) => (row.ep_Date ? row.ep_Date.split("T")[0] : ""),
     },
     {
       name: "N° HES",
@@ -124,7 +144,7 @@ const TablaOrdenesPendientes = () => {
     },
     {
       name: "Fecha HES",
-      selector: (row) => row.HES_Date ? row.HES_Date.split("T")[0] : "",
+      selector: (row) => (row.HES_Date ? row.HES_Date.split("T")[0] : ""),
     },
     {
       name: "N° Factura",
@@ -132,13 +152,39 @@ const TablaOrdenesPendientes = () => {
     },
     {
       name: "Fecha Factura",
-      selector: (row) => row.factura_Date ? row.factura_Date.split("T")[0] : "",
+      selector: (row) =>
+        row.factura_Date ? row.factura_Date.split("T")[0] : "",
     },
   ];
 
   return (
     <>
-      <DataTable columns={columns} data={ordenesFiltradas} />
+      <div className="max-w-screen-lg mx-auto">
+        <DataTable
+          columns={columns}
+          data={filteredData(searchTerm)}
+          pagination
+          paginationComponentOptions={{
+            rowsPerPageText: "Filas por página:",
+            rangeSeparatorText: "de",
+            noRowsPerPage: false,
+            selectAllRowsItem: false,
+            selectAllRowsItemText: "Todos",
+          }}
+          subHeader
+          subHeaderComponent={
+            <div className="flex items-center justify-start">
+              <input
+                type="text"
+                placeholder="Buscar..."
+                value={searchTerm}
+                onChange={handleSearch}
+                className="p-2 border border-gray-300 rounded-md mr-2"
+              />
+            </div>
+          }
+        />
+      </div>
     </>
   );
 };

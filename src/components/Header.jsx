@@ -19,11 +19,6 @@ const Header = () => {
         <h2 className="text-4xl text-sky-600 font-black text-center">
           SERVO/FAMACON
         </h2>
-        <input
-          type="search"
-          placeholder="Buscar OT"
-          className="rounded-lg lg:w-96 block p-2 border"
-        />
         <button
         type="button"
         className="text-white text-sm bg-sky-600 p-3 rounded-md uppercase font-bold"
