@@ -14,6 +14,7 @@ const PdfViewer = () => {
     index,
     setIndex,
     eliminarFile,
+    obtenerOT
   } = useOrdenes();
 
   const handleClose = () => {
@@ -25,27 +26,27 @@ const PdfViewer = () => {
   const prev = () => setIndex(index - 1);
   
   const handleNext = () => {
-    if (index == orden.ot_pictures.length - 1) return;
+    if (index >= orden.ot_pictures.length - 1) return;
     const indice = index + 1;
     mostrarFiles(orden._id, indice);
     next();
   };
 
   const handlePrev = () => {
-    if (index == 0) return;
+    if (index <= 0) return;
     const indice = index - 1;
     mostrarFiles(orden._id, indice);
     prev();
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (
       confirm(
         "¿Estás seguro que quieres eliminar este archivo?, No se podrá recuperar"
       )
     ) {
-      eliminarFile(orden._id, index);
-      
+      await eliminarFile(orden._id, index);
+      await obtenerOT(orden._id);
       handleClose();
     }
   };
