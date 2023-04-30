@@ -133,7 +133,6 @@ const OrdenProvider = ({ children }) => {
       };
 
       const { data } = await clienteAxios(`/ot/${id}`, config);
-      console.log(data);
       setOrden(data);
     } catch (error) {
       console.log(error);

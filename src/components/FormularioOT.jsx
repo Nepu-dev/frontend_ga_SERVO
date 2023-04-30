@@ -12,6 +12,7 @@ const FormularioOT = () => {
     om_number: "",
     init_Date: "",
     end_Date: "",
+    ot_client: "",
     ot_Description: "",
     value: "",
     solped: "",
@@ -44,6 +45,7 @@ const FormularioOT = () => {
         om_number: orden.om_number || "",
         init_Date: orden.init_Date?.split("T")[0] || "",
         end_Date: orden.end_Date?.split("T")[0] || "",
+        ot_client: orden.ot_client || "",
         ot_Description: orden.ot_Description || "",
         value: orden.value || "",
         solped: orden.solped || "",
@@ -106,6 +108,7 @@ const FormularioOT = () => {
     formdata.append("om_number", formulario.om_number);
     formdata.append("init_Date", formulario.init_Date);
     formdata.append("end_Date", formulario.end_Date);
+    formdata.append("ot_client", formulario.ot_client);
     formdata.append("ot_Description", formulario.ot_Description);
     formdata.append("value", formulario.value);
     formdata.append("solped", formulario.solped);
@@ -135,6 +138,7 @@ const FormularioOT = () => {
       om_number: "",
       init_Date: "",
       end_Date: "",
+      ot_client: "",
       ot_Description: "",
       value: "",
       solped: "",
@@ -257,6 +261,18 @@ const FormularioOT = () => {
           />
         </div>
         {/* Aquí irían los campos del segundo paso del formulario */}
+        <div className="flex justify-between mb-5">
+          <label className="font-semibold text-sm uppercase" htmlFor="">
+            Cliente:{" "}
+          </label>
+          <input
+            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+            placeholder="Nombre Cliente..."
+            name="ot_client"
+            value={formulario.ot_client}
+            onChange={onChange}
+          />
+        </div>
         <div className="flex justify-between w-full mb-5">
           <label className="font-semibold text-sm uppercase" htmlFor="">
             Descripción:{" "}

@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import DataTable from "react-data-table-component";
 import useOrdenes from "../hooks/useOrdenes";
-import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-const TablaOrdenesPendientes = () => {
-  const { ordenes, eliminarOT } = useOrdenes();
-  const params = useParams();
-  const ordenesFiltradas = ordenes.filter((orden) => orden.ot_state === false);
+const TablaOrdenesPendientes = ({ordenesFiltradas}) => {
+  const { eliminarOT } = useOrdenes();
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredData = (searchTerm) => {
@@ -92,6 +89,10 @@ const TablaOrdenesPendientes = () => {
     {
       name: "Fecha término",
       selector: (row) => (row.end_Date ? row.end_Date.split("T")[0] : ""),
+    },
+    {
+      name: "Cliente",
+      selector: (row) => row.ot_client,
     },
     {
       name: "Descripción",
