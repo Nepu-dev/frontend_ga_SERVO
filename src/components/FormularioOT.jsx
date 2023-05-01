@@ -3,6 +3,7 @@ import useOrdenes from "../hooks/useOrdenes";
 import Alerta from "./Alerta";
 import { useParams } from "react-router-dom";
 import PdfViewer from "./PdfViewer";
+import GenerarQR from "./GenerarQR"
 
 const FormularioOT = () => {
   const [id, setId] = useState(null);
@@ -161,15 +162,19 @@ const FormularioOT = () => {
   };
 
   const { msg } = alerta;
+  const texto = JSON.stringify(orden);
 
   return (
     <div className="p-4 bg-white shadow-md rounded-md">
-      <div className="flex justify-between">
+      <div>
         <h2 className="text-xl font-semibold mb-4">
           {id ? "Formulario de Edición" : "Formulario de Registro"}
         </h2>
-        {id ? (
-          <button onClick={() => mostrarFiles(orden._id, index)}>
+        
+      </div>
+      <div className="flex mb-5 justify-between">
+      {id ? (
+          <button className="flex" onClick={() => mostrarFiles(orden._id, index)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -178,12 +183,14 @@ const FormularioOT = () => {
             >
               <path d="M19.906 9c.382 0 .749.057 1.094.162V9a3 3 0 00-3-3h-3.879a.75.75 0 01-.53-.22L11.47 3.66A2.25 2.25 0 009.879 3H6a3 3 0 00-3 3v3.162A3.756 3.756 0 014.094 9h15.812zM4.094 10.5a2.25 2.25 0 00-2.227 2.568l.857 6A2.25 2.25 0 004.951 21H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-2.227-2.568H4.094z" />
             </svg>
+            Ver archivos
           </button>
         ) : (
           ""
         )}
         {id ? (
           <button
+          className="flex mx-4"
             onClick={() => {
               downloadFiles(id);
             }}
@@ -200,11 +207,15 @@ const FormularioOT = () => {
                 clipRule="evenodd"
               />
             </svg>
+            Descargar paquete
           </button>
         ) : (
           ""
         )}
-      </div>
+        {
+          id ? (<GenerarQR text={texto}/>) : ""
+        }
+        </div>
 
       {msg && <Alerta alerta={alerta} />}
 
@@ -215,7 +226,7 @@ const FormularioOT = () => {
             N° OT:{" "}
           </label>
           <input
-            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-500 bg-gray-200"
             placeholder="Ex: 1200###"
             type="number"
             name="ot_number"
@@ -228,7 +239,7 @@ const FormularioOT = () => {
             N° OM:{" "}
           </label>
           <input
-            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-500 bg-gray-200"
             placeholder="Ex: 1200###"
             type="number"
             name="om_number"
@@ -241,7 +252,7 @@ const FormularioOT = () => {
             Fecha de ingreso:{" "}
           </label>
           <input
-            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-500 bg-gray-200"
             type="Date"
             name="init_Date"
             value={formulario.init_Date}
@@ -253,7 +264,7 @@ const FormularioOT = () => {
             Fecha de Término:{" "}
           </label>
           <input
-            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-500 bg-gray-200"
             type="Date"
             name="end_Date"
             value={formulario.end_Date}
@@ -266,7 +277,7 @@ const FormularioOT = () => {
             Cliente:{" "}
           </label>
           <input
-            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-500 bg-gray-200"
             placeholder="Nombre Cliente..."
             name="ot_client"
             value={formulario.ot_client}
@@ -278,7 +289,7 @@ const FormularioOT = () => {
             Descripción:{" "}
           </label>
           <textarea
-            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-500 bg-gray-200"
             name="ot_Description"
             id=""
             cols="30"
@@ -295,7 +306,7 @@ const FormularioOT = () => {
               Valor Neto:{" "}
             </label>
             <input
-              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-500 bg-gray-200"
               type="number"
               name="value"
               placeholder="$#####"
@@ -308,7 +319,7 @@ const FormularioOT = () => {
               Solped:{" "}
             </label>
             <input
-              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-500 bg-gray-200"
               type="number"
               name="solped"
               placeholder="##########"
@@ -321,7 +332,7 @@ const FormularioOT = () => {
               Aviso:{" "}
             </label>
             <input
-              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-500 bg-gray-200"
               type="number"
               name="aviso"
               placeholder="##########"
@@ -337,7 +348,7 @@ const FormularioOT = () => {
               Orden de Compra:{" "}
             </label>
             <input
-              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-500 bg-gray-200"
               type="number"
               name="oc_number"
               placeholder="##########"
@@ -350,7 +361,7 @@ const FormularioOT = () => {
               Fecha orden de compra:{" "}
             </label>
             <input
-              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-500 bg-gray-200"
               type="Date"
               name="oc_Date"
               value={formulario.oc_Date}
@@ -365,7 +376,7 @@ const FormularioOT = () => {
               N° guía de despacho de Cliente:{" "}
             </label>
             <input
-              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-500 bg-gray-200"
               type="number"
               name="gd_number_client"
               placeholder="###"
@@ -378,7 +389,7 @@ const FormularioOT = () => {
               Fecha guía de despacho de Cliente:{" "}
             </label>
             <input
-              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-500 bg-gray-200"
               type="Date"
               name="gd_Date_client"
               value={formulario.gd_Date_client}
@@ -392,7 +403,7 @@ const FormularioOT = () => {
               N° guía de despacho:{" "}
             </label>
             <input
-              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-500 bg-gray-200"
               type="number"
               name="gd_number"
               placeholder="###"
@@ -405,7 +416,7 @@ const FormularioOT = () => {
               Fecha guía de despacho:{" "}
             </label>
             <input
-              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-500 bg-gray-200"
               type="Date"
               name="gd_Date"
               value={formulario.gd_Date}
@@ -420,7 +431,7 @@ const FormularioOT = () => {
               Fecha Estado de pago{" "}
             </label>
             <input
-              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-500 bg-gray-200"
               type="Date"
               name="ep_Date"
               value={formulario.ep_Date}
@@ -432,7 +443,7 @@ const FormularioOT = () => {
               N° HES:{" "}
             </label>
             <input
-              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-500 bg-gray-200"
               type="number"
               name="HES"
               placeholder="##########"
@@ -445,7 +456,7 @@ const FormularioOT = () => {
               Fecha HES:{" "}
             </label>
             <input
-              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-500 bg-gray-200"
               type="Date"
               name="HES_Date"
               value={formulario.HES_Date}
@@ -460,7 +471,7 @@ const FormularioOT = () => {
               N° Factura:{" "}
             </label>
             <input
-              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-500 bg-gray-200"
               type="number"
               name="factura_number"
               placeholder="###"
@@ -473,7 +484,7 @@ const FormularioOT = () => {
               Fecha factura:{" "}
             </label>
             <input
-              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+              className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-500 bg-gray-200"
               type="Date"
               name="factura_Date"
               value={formulario.factura_Date}
@@ -511,7 +522,7 @@ const FormularioOT = () => {
             Observaciones:{" "}
           </label>
           <textarea
-            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-400 bg-gray-200"
+            className="rounded-md border-2 border-sky-600 focus:outline-none focus:border-sky-500 px-2 py-1 text-gray-500 bg-gray-200"
             name="observaciones"
             id=""
             cols="30"

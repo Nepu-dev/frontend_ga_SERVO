@@ -44,7 +44,7 @@ const Login = () => {
     <>
       <h1 className="text-sky-300 text-6xl capitalize font-black text-center">
         Inicia Sesión para acceder a{" "}
-        <span className="text-slate-500">SERVO/FAMACON</span>
+        <span className="text-slate-500">SERVO LTDA</span>
       </h1>
 
       {msg && <Alerta alerta={alerta}/>}
