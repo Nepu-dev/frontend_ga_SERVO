@@ -161,6 +161,18 @@ const FormularioOT = () => {
     });
   };
 
+  const handleFiles = () => {
+    if (orden.ot_pictures.length === 0) {
+      mostrarAlerta({
+        msg: "No hay archivos para mostrar",
+        error: true,
+      });
+      return;
+    }else{
+      mostrarFiles(orden._id, index)
+    }
+  };
+
   const { msg } = alerta;
   const texto = JSON.stringify(orden);
 
@@ -174,7 +186,7 @@ const FormularioOT = () => {
       </div>
       <div className="flex mb-5 justify-between">
       {id ? (
-          <button className="flex" onClick={() => mostrarFiles(orden._id, index)}>
+          <button className="flex" onClick={handleFiles}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -513,6 +525,7 @@ const FormularioOT = () => {
             className="py-2 px-3 rounded-md focus:outline-none bg-gray-300 text-gray-700 border border-gray-400 hover:bg-gray-500 hover:border-gray-500"
             type="file"
             multiple
+            accept="application/pdf"
             name="ot_pictures"
             onChange={onChange}
           />
