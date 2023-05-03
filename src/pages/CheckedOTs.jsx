@@ -5,7 +5,7 @@ import ExportarPDF from "../components/ExportarPDF";
 import useOrdenes from "../hooks/useOrdenes";
 
 
-const CheckedOTs = () => {
+const Checkedots = () => {
   const { ordenes, cargando } = useOrdenes();
   const ordenesFiltradas = ordenes.filter((orden) => orden.ot_state === true);
 
@@ -27,4 +27,4 @@ const CheckedOTs = () => {
   );
 };
 
-export default CheckedOTs;
+export default Checkedots;
