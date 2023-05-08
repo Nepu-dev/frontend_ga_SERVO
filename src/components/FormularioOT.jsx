@@ -174,7 +174,17 @@ const FormularioOT = () => {
   };
 
   const { msg } = alerta;
-  const texto = JSON.stringify(orden);
+
+  const texto = `OM: ${orden.om_number}
+  Fecha de ingreso: ${orden.init_Date?.split("T")[0] || ""}
+  Descripcion: ${orden.ot_Description || ""}
+  Cliente: ${orden.ot_client || ""}
+  Solped: ${orden.solped || ""}
+  Aviso: ${orden.aviso || ""}
+  Orden de compra: ${orden.oc_number || ""}
+  Fecha orden de compra: ${orden.oc_Date?.split("T")[0] || ""}
+  Guia de despacho: ${orden.gd_number || ""}
+  Fecha guia de despacho: ${orden.gd_Date?.split("T")[0] || ""}`;
 
   return (
     <div className="p-4 bg-white shadow-md rounded-md">
