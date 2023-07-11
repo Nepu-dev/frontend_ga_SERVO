@@ -58,6 +58,10 @@ const OrdenProvider = ({ children }) => {
   };
 
   const nuevaOT = async (ot) => {
+    setAlerta({
+      msg: "Cargando...",
+      error: false,
+    });
     try {
       const token = sessionStorage.getItem("token");
       if (!token) {
@@ -83,7 +87,13 @@ const OrdenProvider = ({ children }) => {
         navigate("/OTs/lista-ot");
       }, 3000);
     } catch (error) {
-      console.error();
+      setAlerta({
+        msg: "Error al crear",
+        error: true,
+      });
+      setTimeout(() => {
+        setAlerta({});
+      }, 3000);
     }
   };
 
@@ -114,7 +124,13 @@ const OrdenProvider = ({ children }) => {
         navigate("/OTs/lista-ot");
       }, 3000);
     } catch (error) {
-      console.log(error);
+      setAlerta({
+        msg: "Error al actualizar",
+        error: true,
+      });
+      setTimeout(() => {
+        setAlerta({});
+      }, 3000);
     }
   };
 
