@@ -94,12 +94,11 @@ const FormularioOT = () => {
         formulario.ot_number,
         formulario.om_number,
         formulario.init_Date,
-        formulario.end_Date,
         formulario.value,
       ].includes("")
     ) {
       mostrarAlerta({
-        msg: "Ingrese los campos obligatorios (OT, OM, FECHAS Y VALOR)",
+        msg: "Ingrese los campos obligatorios (OT, OM, FECHA INICIO Y VALOR)",
         error: true,
       });
       return;
