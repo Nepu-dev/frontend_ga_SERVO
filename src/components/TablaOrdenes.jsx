@@ -77,6 +77,7 @@ const TablaOrdenes = ({ordenesFiltradas}) => {
     {
       name: "N° OT",
       selector: (row) => row.ot_number,
+      sortable: true
     },
     {
       name: "N° OM",
